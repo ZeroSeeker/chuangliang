@@ -13,7 +13,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="chuangliang",
-    version="0.0.2",
+    version="0.0.3",
     author="ZeroSeeker",
     author_email="zeroseeker@foxmail.com",
     description="创量广告平台SDK",
@@ -27,6 +27,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'lazysdk==0.0.21'
+        'lazysdk==0.0.24'
     ]
 )

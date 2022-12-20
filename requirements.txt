@@ -1,1 +1,1 @@
-lazysdk==0.0.21
+lazysdk==0.0.24
