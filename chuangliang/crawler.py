@@ -451,16 +451,18 @@ def material_edit(
         "Accept": "application/json, text/plain, */*",
         "Accept-Encoding": "gzip, deflate",
         "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+        "Cache-Control": "no-cache",
         "Connection": "keep-alive",
+        "Content-Type": "application/json;charset=utf-8",
         "Cookie": cookie,
         "Host": "cli2.mobgi.com",
         "Origin": "https://cl.mobgi.com",
+        "Pragma": "no-cache",
         "Referer": "https://cl.mobgi.com/",
         "Sec-Fetch-Dest": "empty",
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
-        "TE": "trailers",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0",
     }
     response = requests.request(
         method='POST',
