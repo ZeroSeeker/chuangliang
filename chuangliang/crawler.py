@@ -426,3 +426,46 @@ def get_material_manage_list(
         headers=headers
     )
     return response.json()
+
+
+def material_edit(
+        cookie: str,
+        material_id: int,
+        material_name: str
+):
+    """
+    修改素材信息，这里是改名
+    :param cookie:
+    :param material_id: 素材id
+    :param material_name: 修改后的素材名称
+
+    :return:
+    """
+    url = 'https://cli2.mobgi.com/Material/Manage/edit'
+    data = {
+        "material_id": material_id,
+        "material_name": material_name,
+        "type": 1
+    }
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+        "Connection": "keep-alive",
+        "Cookie": cookie,
+        "Host": "cli2.mobgi.com",
+        "Origin": "https://cl.mobgi.com",
+        "Referer": "https://cl.mobgi.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "TE": "trailers",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
+    }
+    response = requests.request(
+        method='POST',
+        url=url,
+        json=data,
+        headers=headers
+    )
+    return response.json()
