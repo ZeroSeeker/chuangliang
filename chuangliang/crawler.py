@@ -6,6 +6,7 @@
 @ GitHub : https://github.com/ZeroSeeker
 @ Gitee : https://gitee.com/ZeroSeeker
 """
+from lazysdk import lazyrequests
 from lazysdk import lazytime
 from lazysdk import lazymd5
 from urllib import parse
@@ -84,13 +85,12 @@ def login_inner(
         'password': lazymd5.md5_str(password),
         'product_version': product_version
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='POST',
         url=url,
         json=data,
         headers=headers
     )
-    return response
 
 
 def login(
@@ -123,11 +123,12 @@ def login(
         'email': email,
         'password': lazymd5.md5_str(password)
     }
-    response = requests.request(
+    response = lazyrequests.lazy_requests(
         method='POST',
         url=url,
         json=data,
-        headers=headers
+        headers=headers,
+        return_json=False
     )
     response_json = response.json()
     if response_json['code'] == 0:
@@ -182,13 +183,12 @@ def get_material_creative_users_options(
         "TE": "trailers",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0",
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='GET',
         url=url,
         params=params,
         headers=headers
     )
-    return response.json()
 
 
 def get_material_report_sum(
@@ -278,13 +278,12 @@ def get_material_report_sum(
         "TE": "trailers",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0",
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='POST',
         url=url,
         json=data,
         headers=headers
     )
-    return response.json()
 
 
 def get_sub_user_list(
@@ -342,13 +341,12 @@ def get_sub_user_list(
         "TE": "trailers",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='GET',
         url=url,
         params=params,
         headers=headers
     )
-    return response.json()
 
 
 def get_material_manage_list(
@@ -419,13 +417,12 @@ def get_material_manage_list(
         "TE": "trailers",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='POST',
         url=url,
         json=data,
         headers=headers
     )
-    return response.json()
 
 
 def material_edit(
@@ -464,13 +461,12 @@ def material_edit(
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0",
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='POST',
         url=url,
         json=data,
         headers=headers
     )
-    return response.json()
 
 
 def material_detail(
@@ -504,13 +500,12 @@ def material_detail(
         "TE": "trailers",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='GET',
         url=url,
         params=data,
         headers=headers
     )
-    return response.json()
 
 
 def material_group_child_list(
@@ -549,13 +544,12 @@ def material_group_child_list(
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='GET',
         url=url,
         params=data,
         headers=headers
     )
-    return response.json()
 
 
 def material_move(
@@ -596,10 +590,9 @@ def material_move(
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
     }
-    response = requests.request(
+    return lazyrequests.lazy_requests(
         method='POST',
         url=url,
         json=data,
         headers=headers
     )
-    return response.json()
