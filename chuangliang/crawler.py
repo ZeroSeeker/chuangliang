@@ -624,7 +624,8 @@ def material_report(
         page: int = 1,
         page_size: int = 20,
         start_date: str = None,
-        end_date: str = None
+        end_date: str = None,
+        relate_dims: list = None
 ):
     """
     报表-素材报表
@@ -636,6 +637,10 @@ def material_report(
     :param page_size:
     :param start_date:
     :param end_date:
+    :param relate_dims: 关联维度,
+        material_create_time:上传时间 --> material_create_time
+        owner_user_id:优化师 --> user_name
+        creative_user_id:创意人 --> creative_user
 
     :return:
     """
@@ -643,6 +648,8 @@ def material_report(
         start_date = lazytime.get_date_string(days=0)
     if not end_date:
         end_date = lazytime.get_date_string(days=0)
+    if not relate_dims:
+        relate_dims = ["material_create_time"]
     url = 'https://cli2.mobgi.com/ReportV23/MaterialReport/getReport'
     data = {
         "time_dim": "days",  # 分日
@@ -664,9 +671,7 @@ def material_report(
         "sort_field": sort_field,
         "sort_direction": "desc",
         "kpis": kpis,
-        "relate_dims": [
-            "material_create_time"
-        ],
+        "relate_dims": relate_dims,
         "start_date": start_date,
         "end_date": end_date,
         "page": page,
