@@ -16,6 +16,24 @@ import copy
 import json
 
 
+default_headers = {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+    "Content-Type": "application/json;charset=utf-8",
+    "Host": "cli2.mobgi.com",
+    "Origin": "https://cl.mobgi.com",
+    "Pragma": "no-cache",
+    "Referer": "https://cl.mobgi.com/",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-site",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
+}
+
+
 def make_sign(
         post_data: dict,
         cl_secret: str,
@@ -590,6 +608,74 @@ def material_move(
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
     }
+    return lazyrequests.lazy_requests(
+        method='POST',
+        url=url,
+        json=data,
+        headers=headers
+    )
+
+
+def material_report(
+        cookie: str,
+        media_type: str,
+        sort_field: str,
+        kpis: list = None,
+        page: int = 1,
+        page_size: int = 20,
+        start_date: str = None,
+        end_date: str = None
+):
+    """
+    报表-素材报表
+    :param cookie:
+    :param media_type:
+    :param sort_field:
+    :param kpis:
+    :param page:
+    :param page_size:
+    :param start_date:
+    :param end_date:
+
+    :return:
+    """
+    if not start_date:
+        start_date = lazytime.get_date_string(days=0)
+    if not end_date:
+        end_date = lazytime.get_date_string(days=0)
+    url = 'https://cli2.mobgi.com/ReportV23/MaterialReport/getReport'
+    data = {
+        "time_dim": "days",  # 分日
+        "media_type": media_type,  # 媒体
+        "data_type": "list",
+        "data_dim": "material",  # 数据维度：素材
+        "conditions": {
+            "search_type": "name",
+            "media_project_id": [],
+            "material_special_id": [],
+            "make_user_id": [],
+            "advertiser_id": [],
+            "owner_user_id": [],
+            "media_advertiser_company": [],
+            "material_type": "",
+            "label_ids": [],
+            "material_group_id": []
+        },  # 筛选维度
+        "sort_field": sort_field,
+        "sort_direction": "desc",
+        "kpis": kpis,
+        "relate_dims": [
+            "material_create_time"
+        ],
+        "start_date": start_date,
+        "end_date": end_date,
+        "page": page,
+        "page_size": page_size
+    }
+
+    headers = copy.deepcopy(default_headers)
+    headers["Cookie"] = cookie
+
     return lazyrequests.lazy_requests(
         method='POST',
         url=url,
