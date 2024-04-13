@@ -625,7 +625,8 @@ def material_report(
         page_size: int = 20,
         start_date: str = None,
         end_date: str = None,
-        relate_dims: list = None
+        relate_dims: list = None,
+        conditions: dict = None
 ):
     """
     报表-素材报表
@@ -650,13 +651,8 @@ def material_report(
         end_date = lazytime.get_date_string(days=0)
     if not relate_dims:
         relate_dims = ["material_create_time"]
-    url = 'https://cli2.mobgi.com/ReportV23/MaterialReport/getReport'
-    data = {
-        "time_dim": "days",  # 分日
-        "media_type": media_type,  # 媒体
-        "data_type": "list",
-        "data_dim": "material",  # 数据维度：素材
-        "conditions": {
+    if not conditions:
+        conditions = {
             "search_type": "name",
             "media_project_id": [],
             "material_special_id": [],
@@ -667,7 +663,14 @@ def material_report(
             "material_type": "",
             "label_ids": [],
             "material_group_id": []
-        },  # 筛选维度
+        }
+    url = 'https://cli2.mobgi.com/ReportV23/MaterialReport/getReport'
+    data = {
+        "time_dim": "days",  # 分日
+        "media_type": media_type,  # 媒体
+        "data_type": "list",
+        "data_dim": "material",  # 数据维度：素材
+        "conditions": conditions,  # 筛选维度
         "sort_field": sort_field,
         "sort_direction": "desc",
         "kpis": kpis,
