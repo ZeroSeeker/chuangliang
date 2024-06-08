@@ -672,6 +672,50 @@ def material_move(
     )
 
 
+def material_delete(
+        cookie: str,
+        material_id: int = None,
+        material_ids: list = None
+):
+    """
+    删除素材
+    :param cookie:
+    :param material_ids:
+    :param material_id: 要删除的素材的id
+    :param material_ids: 要删除的素材的id列表
+
+    :return:
+    """
+    if material_id:
+        material_ids = [material_id]
+
+    url = 'https://cli2.mobgi.com/Material/Manage/delete'
+    data = {"material_ids": material_ids}
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json;charset=utf-8",
+        "Cookie": cookie,
+        "Host": "cli2.mobgi.com",
+        "Origin": "https://cl.mobgi.com",
+        "Pragma": "no-cache",
+        "Referer": "https://cl.mobgi.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
+    }
+    return lazyrequests.lazy_requests(
+        method='POST',
+        url=url,
+        json=data,
+        headers=headers
+    )
+
+
 def material_report(
         cookie: str,
         media_type: str,
