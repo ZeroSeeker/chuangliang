@@ -570,6 +570,62 @@ def material_group_child_list(
     )
 
 
+def material_special_product_list(
+        cookie: str,
+        special_id: int = 0,
+        group_id: int = None,
+        page: int = 1,
+        page_size: int = 20,
+        keyword: str = "",
+        keyword_type: int = 1
+):
+    """
+    获取专辑下的文件夹/素材信息
+    :param cookie:
+    :param special_id: 专辑id
+    :param group_id: 文件夹id
+    :param page:
+    :param page_size:
+    :param keyword:
+    :param keyword_type:
+
+    :return:
+    """
+    url = 'https://cli2.mobgi.com/Material/Special/specialProductList'
+    data = {
+        "keyword": keyword,
+        "keywordType": keyword_type,
+        "special_id": special_id,
+        "order_by": "product_create_time_desc",
+        "page": page,
+        "page_size": page_size
+    }
+    if group_id:
+        data['group_id'] = group_id
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "Cookie": cookie,
+        "Host": "cli2.mobgi.com",
+        "Origin": "https://cl.mobgi.com",
+        "Pragma": "no-cache",
+        "Referer": "https://cl.mobgi.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
+    }
+    return lazyrequests.lazy_requests(
+        method='GET',
+        url=url,
+        params=data,
+        headers=headers
+    )
+
+
 def material_move(
         cookie: str,
         material_ids: list,
