@@ -107,7 +107,8 @@ def login_inner(
         method='POST',
         url=url,
         json=data,
-        headers=headers
+        headers=headers,
+        return_json=False
     )
 
 
