@@ -791,3 +791,81 @@ def material_report(
         json=data,
         headers=headers
     )
+
+
+def account_report(
+        cookie: str,
+        media_type: str,
+        sort_field: str,
+        kpis: list = None,
+        page: int = 1,
+        page_size: int = 20,
+        start_date: str = None,
+        end_date: str = None,
+        relate_dims: list = None,
+        conditions: dict = None,
+        sort_direction: str = "desc",
+        data_type: str = "list",
+        data_dim: str = "advertiser_id",
+        time_dim: str = "sum"
+):
+    """
+    报表-账户报表
+    :param cookie:
+    :param media_type:
+    :param sort_field:
+    :param kpis:
+    :param page:
+    :param page_size:
+    :param start_date:
+    :param end_date:
+    :param relate_dims: 关联维度,
+        material_create_time:上传时间 --> material_create_time
+        owner_user_id:优化师 --> user_name
+        creative_user_id:创意人 --> creative_user
+
+    :return:
+    """
+    if not start_date:
+        start_date = lazytime.get_date_string(days=0)
+    if not end_date:
+        end_date = lazytime.get_date_string(days=0)
+    if not relate_dims:
+        relate_dims = ["owner_user_id"]
+    if not conditions:
+        conditions = {
+            "keyword": "",
+             "owner_user_id": [],
+             "media_agent_id": [],
+             "project_id": [],
+             "media_project_id": [],
+             "advertiser_id": [],
+             "time_line": "REPORTING_TIME"
+        }
+    url = 'https://cli1.mobgi.com/ReportV23/AccountReport/getReport'
+    data = {
+        "time_dim": time_dim,
+        "media_type": media_type,
+        "data_type": data_type,
+        "data_dim": data_dim,
+        "conditions": conditions,
+        "sort_field": sort_field,
+        "sort_direction": sort_direction,
+        "kpis": kpis,
+        "relate_dims": relate_dims,
+        "start_date": start_date,
+        "end_date": end_date,
+        "db_type":"doris",
+        "page": page,
+        "page_size": page_size
+    }
+
+    headers = copy.deepcopy(default_headers)
+    headers["Cookie"] = cookie
+
+    return lazyrequests.lazy_requests(
+        method='POST',
+        url=url,
+        json=data,
+        headers=headers
+    )
