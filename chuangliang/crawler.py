@@ -32,6 +32,7 @@ default_headers = {
     "Sec-Fetch-Site": "same-site",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0"
 }
+hosts = ["cli1.mobgi.com", "cli2.mobgi.com"]
 
 
 def make_sign(
@@ -727,13 +728,19 @@ def material_report(
         start_date: str = None,
         end_date: str = None,
         relate_dims: list = None,
-        conditions: dict = None
+        conditions: dict = None,
+        host: str = "cli2.mobgi.com",
+        data_dim: str = "material",
+        data_type: str = "list",
+        db_type: str = "doris",
+        sort_direction: str = "desc",
+        time_dim: str = "days"
 ):
     """
     报表-素材报表
     :param cookie:
-    :param media_type:
-    :param sort_field:
+    :param media_type: 媒体,toutiao_upgrade:巨量广告
+    :param sort_field: 排序字段，stat_cost：消耗
     :param kpis:
     :param page:
     :param page_size:
@@ -743,6 +750,9 @@ def material_report(
         material_create_time:上传时间 --> material_create_time
         owner_user_id:优化师 --> user_name
         creative_user_id:创意人 --> creative_user
+    :param data_dim: 数据维度：素材
+    :param sort_direction: 排序
+    :param time_dim: 数据汇总的时间维度，sum：汇总，days：分日
 
     :return:
     """
@@ -754,7 +764,7 @@ def material_report(
         relate_dims = ["material_create_time"]
     if not conditions:
         conditions = {
-            "search_type": "name",
+            "search_type": "name",  # 筛选维度：name/素材名称
             "media_project_id": [],
             "material_special_id": [],
             "make_user_id": [],
@@ -765,25 +775,27 @@ def material_report(
             "label_ids": [],
             "material_group_id": []
         }
-    url = 'https://cli2.mobgi.com/ReportV23/MaterialReport/getReport'
+    url = f'https://{host}/ReportV23/MaterialReport/getReport'
     data = {
-        "time_dim": "days",  # 分日
+        "time_dim": time_dim,  # 分日
         "media_type": media_type,  # 媒体
-        "data_type": "list",
-        "data_dim": "material",  # 数据维度：素材
+        "data_type": data_type,
+        "data_dim": data_dim,  # 数据维度
         "conditions": conditions,  # 筛选维度
         "sort_field": sort_field,
-        "sort_direction": "desc",
+        "sort_direction": sort_direction,
         "kpis": kpis,
         "relate_dims": relate_dims,
         "start_date": start_date,
         "end_date": end_date,
         "page": page,
-        "page_size": page_size
+        "page_size": page_size,
+        "db_type": db_type
     }
 
     headers = copy.deepcopy(default_headers)
     headers["Cookie"] = cookie
+    headers["Host"] = host
 
     return lazyrequests.lazy_requests(
         method='POST',
@@ -807,7 +819,8 @@ def account_report(
         sort_direction: str = "desc",
         data_type: str = "list",
         data_dim: str = "advertiser_id",
-        time_dim: str = "sum"
+        time_dim: str = "sum",
+        host: str = "cli1.mobgi.com"
 ):
     """
     报表-账户报表
@@ -842,7 +855,7 @@ def account_report(
              "advertiser_id": [],
              "time_line": "REPORTING_TIME"
         }
-    url = 'https://cli1.mobgi.com/ReportV23/AccountReport/getReport'
+    url = f'https://{host}/ReportV23/AccountReport/getReport'
     data = {
         "time_dim": time_dim,
         "media_type": media_type,
